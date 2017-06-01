@@ -14,7 +14,6 @@ import android.view.animation.Transformation
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    val mClock = MyClock("私の時計", Ampm.AM, 10, 100, 100)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +41,7 @@ class MainActivity : AppCompatActivity() {
             }
             val tCenterX = width / 2F
             val tCenterY = height / 2F
+            drawName(aCanvas)
             drawDial(aCanvas, tCenterX, tCenterY)
             val tRadius = Math.min(tCenterX, tCenterY) * 0.8F
             mPaint.color = Color.rgb(0,0,0)
@@ -54,21 +54,26 @@ class MainActivity : AppCompatActivity() {
         }
 
         private fun sec2Rad(aSecond : Int) : Double {
-            return ((aSecond * 2.0) / mClock.seconds - 0.5) * Math.PI
+            return ((aSecond * 2.0) / ClockList.currentClock.seconds - 0.5) * Math.PI
         }
 
         private fun min2Rad(aMinute : Int) : Double {
-            return ((aMinute * 2.0) / mClock.minutes - 0.5) * Math.PI
+            return ((aMinute * 2.0) / ClockList.currentClock.minutes - 0.5) * Math.PI
         }
 
         private fun hour2Rad(aHour: Float) : Double {
-            return ((aHour * 2.0) / mClock.hours - 0.5) * Math.PI
+            return ((aHour * 2.0) / ClockList.currentClock.hours - 0.5) * Math.PI
+        }
+
+        private fun drawName(aCanvas: Canvas) {
+            val tMetrix = mPaint.fontMetrics
+            aCanvas.drawText(ClockList.currentClock.name, 0F, tMetrix.bottom - tMetrix.top, mPaint)
         }
 
         private fun drawDial(aCanvas: Canvas, aCenterX: Float, aCenterY: Float) {
             mPaint.textSize = Math.min(aCenterX, aCenterY) * 0.1F
             val tRadius = Math.min(aCenterX, aCenterY) * 0.9F
-            for (i in 0..(mClock.hours-1)) {
+            for (i in if (ClockList.currentClock.dialFromOne) 1..(ClockList.currentClock.hours) else 0..(ClockList.currentClock.hours-1)) {
                 drawNum(aCanvas, i, aCenterX + tRadius * Math.cos(hour2Rad(i.toFloat())).toFloat(), aCenterY + tRadius * Math.sin(hour2Rad(i.toFloat())).toFloat())
             }
         }
@@ -87,10 +92,10 @@ class MainActivity : AppCompatActivity() {
             val tCal = Calendar.getInstance(TimeZone.getDefault())
             tCal.timeInMillis = System.currentTimeMillis()
             val millisecond = ((tCal.get(Calendar.HOUR) * 60 + tCal.get(Calendar.MINUTE)) * 60 + tCal.get(Calendar.SECOND)) * 1000L + tCal.get(Calendar.MILLISECOND)
-            val tNow = mClock.calcNow(millisecond)
+            val tNow = ClockList.currentClock.calcNow(millisecond)
             mView.mSecond = tNow.second
             mView.mMinute = tNow.minute
-            mView.mHour = tNow.hour + mView.mMinute / mClock.minutes.toFloat()
+            mView.mHour = tNow.hour + mView.mMinute / ClockList.currentClock.minutes.toFloat()
 
             mView.requestLayout()
         }

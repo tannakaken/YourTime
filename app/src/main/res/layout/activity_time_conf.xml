@@ -9,7 +9,7 @@
 
 
     <TextView
-        android:id="@+id/timeView"
+        android:id="@+id/make_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -17,7 +17,7 @@
         android:textAppearance="@android:style/TextAppearance.Material.Title" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/time_name_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -30,14 +30,14 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/ampm_text"
             android:layout_width="195dp"
             android:layout_height="wrap_content"
             android:text="@string/ampm"
             android:textAppearance="@android:style/TextAppearance.Material.Large" />
 
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/ampm_spinner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:entries="@array/ampm" />
@@ -49,14 +49,14 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/hours_text"
             android:layout_width="195dp"
             android:layout_height="wrap_content"
             android:text="@string/hours"
             android:textAppearance="@android:style/TextAppearance.Material.Large" />
 
         <Spinner
-            android:id="@+id/spinner2"
+            android:id="@+id/hours_spinner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:entries="@array/range" />
@@ -68,14 +68,14 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/minutes_text"
             android:layout_width="195dp"
             android:layout_height="wrap_content"
             android:text="@string/minutes"
             android:textAppearance="@android:style/TextAppearance.Material.Large" />
 
         <Spinner
-            android:id="@+id/spinner3"
+            android:id="@+id/minutes_spinner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:entries="@array/range" />
@@ -88,14 +88,14 @@
         android:weightSum="1">
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/seconds_text"
             android:layout_width="195dp"
             android:layout_height="wrap_content"
             android:text="@string/seconds"
             android:textAppearance="@android:style/TextAppearance.Material.Large" />
 
         <Spinner
-            android:id="@+id/spinner4"
+            android:id="@+id/seconds_spinner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:entries="@array/range" />
@@ -107,24 +107,34 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/dial_text"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text="@string/dial_is"
             android:textAppearance="@android:style/TextAppearance.Material.Large" />
 
-        <RadioButton
-            android:id="@+id/radioButton2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/start_from_one" />
+        <RadioGroup
+            android:id="@+id/dial_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/radioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/start_from_zero" />
+            <RadioButton
+                android:id="@+id/dial_from_one_radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/start_from_one" />
+
+            <RadioButton
+                android:id="@+id/dial_from_zero_radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/start_from_zero" />
+        </RadioGroup>
+
     </LinearLayout>
 
     <Space
@@ -137,7 +147,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/cancel_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -149,7 +159,7 @@
             android:layout_weight="1" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/save_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

@@ -4,7 +4,7 @@ package org.tannakaken.yourtime
  * Created by kensaku on 2017/05/31.
  * カスタマイズされた時計システムを表すクラス。
  */
-data class MyClock(val name: String, val ampm: Ampm, val hours: Int, val minutes: Int, val seconds: Int) {
+data class MyClock(val name: String, val ampm: Ampm, val hours: Int, val minutes: Int, val seconds: Int, val dialFromOne: Boolean) {
 
     val oneDay : Long = 1000L * 60 * 60 * 24
     val mySecond = (oneDay / (seconds * minutes * hours * ampm.rowValue)).toInt()
