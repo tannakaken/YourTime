@@ -16,6 +16,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".TimeConfActivity" />
+        <activity android:name=".TimeListActivity" />
     </application>
 
 </manifest>

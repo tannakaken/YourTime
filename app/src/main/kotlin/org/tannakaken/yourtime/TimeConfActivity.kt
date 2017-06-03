@@ -31,27 +31,31 @@ class TimeConfActivity : AppCompatActivity() {
         findViewById(R.id.cancel_button).setOnClickListener {
             finish()
         }
+    }
+
+
+
+    override fun onResume() {
+        super.onResume()
+        val i = intent.getIntExtra("index", 0)
+        mTimeNameEditText.setText(ClockList.get(i).name)
+        mAMPMSpinner.setSelection(ClockList.get(i).ampm.rowValue - 1)
+        mHoursSpinner.setSelection(ClockList.get(i).hours - 1)
+        mMinuteSpinner.setSelection(ClockList.get(i).minutes - 1)
+        mSecondsSpinner.setSelection(ClockList.get(i).seconds - 1)
+        if (ClockList.get(i).dialFromOne) mDialRadioGroup.check(R.id.dial_from_one_radio) else mDialRadioGroup.check(R.id.dial_from_zero_radio)
         findViewById(R.id.save_button).setOnClickListener {
-            ClockList.currentClock = MyClock(
+            ClockList.set(i, MyClock(
                     mTimeNameEditText.text.toString(),
-                    Ampm.values()[mAMPMSpinner.selectedItemPosition],
+                    MyClock.Ampm.values()[mAMPMSpinner.selectedItemPosition],
                     mHoursSpinner.selectedItemPosition + 1,
                     mMinuteSpinner.selectedItemPosition + 1,
                     mSecondsSpinner.selectedItemPosition + 1,
                     mDialRadioGroup.checkedRadioButtonId == R.id.dial_from_one_radio
+                )
             )
             finish()
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mTimeNameEditText.setText(ClockList.currentClock.name)
-        mAMPMSpinner.setSelection(ClockList.currentClock.ampm.rowValue - 1)
-        mHoursSpinner.setSelection(ClockList.currentClock.hours - 1)
-        mMinuteSpinner.setSelection(ClockList.currentClock.minutes - 1)
-        mSecondsSpinner.setSelection(ClockList.currentClock.seconds - 1)
-        if (ClockList.currentClock.dialFromOne) mDialRadioGroup.check(R.id.dial_from_one_radio) else mDialRadioGroup.check(R.id.dial_from_zero_radio)
     }
 }
 

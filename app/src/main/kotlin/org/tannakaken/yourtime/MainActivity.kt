@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(tLayout)
         val tView = ClockView(this)
         tView.setOnClickListener {
-            startActivity(Intent(application, TimeConfActivity::class.java))
+            startActivity(Intent(application, TimeListActivity::class.java))
         }
         tLayout.addView(tView)
         val tAnimation = ClockAnimation(tView)
