@@ -7,13 +7,16 @@
 
     <TextView
         android:id="@+id/time_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="8"
         android:layout_height="match_parent"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-    <CheckBox
-        android:layout_width="wrap_content"
+    <Button
+        android:layout_width="0dp"
+        android:layout_weight="2"
         android:layout_height="match_parent"
-        android:id="@+id/check_current_time" />
+        android:text="選択"
+        android:id="@+id/select_current_time" />
 
 </LinearLayout>

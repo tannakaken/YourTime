@@ -13,4 +13,10 @@ object ClockList : MutableList<MyClock> by ArrayList<MyClock>()  {
         add(MyClock("24時間時計", MyClock.Ampm.AM, 24, 60, 60, false))
         add(MyClock("仏革命暦十進化時間", MyClock.Ampm.AM, 10, 100, 100, true))
     }
+
+    public fun swap(aFrom : Int, aTo : Int) {
+        val tmp = get(aFrom)
+        set(aFrom, get(aTo))
+        set(aTo, tmp)
+    }
 }

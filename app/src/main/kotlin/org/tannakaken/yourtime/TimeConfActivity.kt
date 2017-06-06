@@ -1,5 +1,6 @@
 package org.tannakaken.yourtime
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
@@ -28,12 +29,7 @@ class TimeConfActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_time_conf)
-        findViewById(R.id.cancel_button).setOnClickListener {
-            finish()
-        }
     }
-
-
 
     override fun onResume() {
         super.onResume()
@@ -44,18 +40,27 @@ class TimeConfActivity : AppCompatActivity() {
         mMinuteSpinner.setSelection(ClockList.get(i).minutes - 1)
         mSecondsSpinner.setSelection(ClockList.get(i).seconds - 1)
         if (ClockList.get(i).dialFromOne) mDialRadioGroup.check(R.id.dial_from_one_radio) else mDialRadioGroup.check(R.id.dial_from_zero_radio)
-        findViewById(R.id.save_button).setOnClickListener {
-            ClockList.set(i, MyClock(
-                    mTimeNameEditText.text.toString(),
-                    MyClock.Ampm.values()[mAMPMSpinner.selectedItemPosition],
-                    mHoursSpinner.selectedItemPosition + 1,
-                    mMinuteSpinner.selectedItemPosition + 1,
-                    mSecondsSpinner.selectedItemPosition + 1,
-                    mDialRadioGroup.checkedRadioButtonId == R.id.dial_from_one_radio
-                )
-            )
-            finish()
+        findViewById(R.id.conf_clock_button).setOnClickListener {
+            save(i)
+            ClockList.currentClockIndex = i
+            startActivity(Intent(application, MainActivity::class.java))
         }
+        findViewById(R.id.conf_list_button).setOnClickListener {
+            save(i)
+            startActivity(Intent(application, TimeListActivity::class.java))
+        }
+    }
+
+    private fun save(i : Int) {
+        ClockList.set(i, MyClock(
+                mTimeNameEditText.text.toString(),
+                MyClock.Ampm.values()[mAMPMSpinner.selectedItemPosition],
+                mHoursSpinner.selectedItemPosition + 1,
+                mMinuteSpinner.selectedItemPosition + 1,
+                mSecondsSpinner.selectedItemPosition + 1,
+                mDialRadioGroup.checkedRadioButtonId == R.id.dial_from_one_radio
+            )
+        )
     }
 }
 

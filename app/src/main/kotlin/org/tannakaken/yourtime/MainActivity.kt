@@ -7,20 +7,25 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.constraint.ConstraintLayout
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.Transformation
+import android.widget.LinearLayout
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val tLayout = ConstraintLayout(this)
-        setContentView(tLayout)
+        setContentView(R.layout.activiy_main_layout)
+        val tLayout = findViewById(R.id.main_layout) as LinearLayout
         val tView = ClockView(this)
-        tView.setOnClickListener {
+        findViewById(R.id.main_conf_button).setOnClickListener {
+            val tIntent = Intent(application, TimeConfActivity::class.java)
+            tIntent.putExtra("index", ClockList.currentClockIndex)
+            startActivity(tIntent)
+        }
+        findViewById(R.id.main_list_button).setOnClickListener {
             startActivity(Intent(application, TimeListActivity::class.java))
         }
         tLayout.addView(tView)
