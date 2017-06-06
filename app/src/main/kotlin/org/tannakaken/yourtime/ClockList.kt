@@ -5,8 +5,6 @@ package org.tannakaken.yourtime
  */
 object ClockList : MutableList<MyClock> by ArrayList<MyClock>()  {
     var currentClockIndex = 0
-    val currentClock : MyClock
-        get() = get(currentClockIndex)
 
     init {
         add(MyClock("私の時間", MyClock.Ampm.AMPM, 12, 60, 60, true))
