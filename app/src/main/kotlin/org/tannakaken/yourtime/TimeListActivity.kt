@@ -22,20 +22,18 @@ class TimeListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_time_list)
-        val tRecycleView = findViewById(R.id.time_list_view) as RecyclerView
+        val tRecyclerView = findViewById(R.id.time_list_view) as RecyclerView
 
-        tRecycleView.adapter = TimeAdapter {
+        tRecyclerView.adapter = TimeAdapter(tRecyclerView) {
             aView : View ->
-            val tIntent = Intent(application, TimeConfActivity::class.java)
-            tIntent.putExtra("index", tRecycleView.getChildAdapterPosition(aView))
-            startActivity(tIntent)
+            ClockList.currentClockIndex = tRecyclerView.getChildAdapterPosition(aView)
+            startActivity(Intent(application, TimeConfActivity::class.java))
         }
 
         findViewById(R.id.list_add_button).setOnClickListener {
-            val tIntent = Intent(application, TimeConfActivity::class.java)
             ClockList.add(MyClock("新しい時間", MyClock.Ampm.AMPM, 12, 60, 60, true))
-            tIntent.putExtra("index", ClockList.size - 1)
-            startActivity(tIntent)
+            ClockList.currentClockIndex = ClockList.size - 1
+            startActivity(Intent(application, TimeConfActivity::class.java))
         }
         val callback = object : SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(aRecycleView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?, target: RecyclerView.ViewHolder?): Boolean {
@@ -43,7 +41,12 @@ class TimeListActivity : AppCompatActivity() {
                     val fromPos = viewHolder.getAdapterPosition();
                     val toPos = target.getAdapterPosition();
                     ClockList.swap(fromPos, toPos)
-                    tRecycleView.adapter.notifyItemMoved(fromPos, toPos);
+                    if (ClockList.currentClockIndex == fromPos) {
+                        ClockList.currentClockIndex = toPos
+                    } else if (ClockList.currentClockIndex == toPos) {
+                        ClockList.currentClockIndex = fromPos
+                    }
+                    tRecyclerView.adapter.notifyItemMoved(fromPos, toPos);
                 }
                 return true
             }
@@ -51,11 +54,11 @@ class TimeListActivity : AppCompatActivity() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
                 if (viewHolder != null) {
                     val tPosition = viewHolder.adapterPosition
-                    alertDeletion(tRecycleView, tPosition)
+                    alertDeletion(tRecyclerView, tPosition)
                 }
             }
         }
-        ItemTouchHelper(callback).attachToRecyclerView(tRecycleView)
+        ItemTouchHelper(callback).attachToRecyclerView(tRecyclerView)
     }
 
     private fun alertDeletion(aRecyclerView : RecyclerView, aPosition : Int) {
@@ -65,7 +68,6 @@ class TimeListActivity : AppCompatActivity() {
             alert.setMessage("時間がもうないので「" + ClockList.get(aPosition).name + "」を消せません")
             alert.setPositiveButton("OK", null)
             aRecyclerView.adapter.notifyItemChanged(aPosition)
-
         } else {
             alert.setTitle("時間を消そうとしています")
             alert.setMessage("本当に「" + ClockList.get(aPosition).name + "」を消していいですか？")
@@ -76,6 +78,8 @@ class TimeListActivity : AppCompatActivity() {
                     ClockList.currentClockIndex--
                     aRecyclerView.adapter.notifyItemChanged(ClockList.currentClockIndex)
                     aRecyclerView.adapter.notifyItemChanged(ClockList.currentClockIndex + 1)
+                } else if (ClockList.currentClockIndex == aPosition) {
+                    ClockList.currentClockIndex = 0
                 }
             })
             alert.setNegativeButton("No", { _, _ ->
@@ -90,13 +94,13 @@ class TimeListActivity : AppCompatActivity() {
         recreate()
     }
 
-    inner class TimeAdapter(val onItemViewClickListener: (View) -> Unit) : RecyclerView.Adapter<TimeAdapter.ViewHolder>() {
-        inner class ViewHolder(aItemView : View) : RecyclerView.ViewHolder(aItemView) {
+    inner class TimeAdapter(val mRecyclerVIew: RecyclerView, val onItemViewClickListener: (View) -> Unit) : RecyclerView.Adapter<TimeAdapter.ViewHolder>() {
+        inner class ViewHolder(val mItemView : View) : RecyclerView.ViewHolder(mItemView) {
             val mTextView : TextView by lazy {
-                aItemView.findViewById(R.id.time_name) as TextView
+                mItemView.findViewById(R.id.time_name) as TextView
             }
             val mSelectCurrentTimeButton : Button by lazy {
-                aItemView.findViewById(R.id.select_current_time) as Button
+                mItemView.findViewById(R.id.select_current_time) as Button
             }
         }
 
@@ -110,7 +114,7 @@ class TimeListActivity : AppCompatActivity() {
             if (holder != null) {
                 holder.mTextView.setText(ClockList.get(position).name + if (position == ClockList.currentClockIndex) "✔" else "")
                 holder.mSelectCurrentTimeButton.setOnClickListener {
-                    ClockList.currentClockIndex = position
+                    ClockList.currentClockIndex = mRecyclerVIew.getChildAdapterPosition(holder.mItemView)
                     startActivity(Intent(application, MainActivity::class.java))
                 }
             }

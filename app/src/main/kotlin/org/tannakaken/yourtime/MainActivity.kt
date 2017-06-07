@@ -1,5 +1,6 @@
 package org.tannakaken.yourtime
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Canvas
@@ -16,7 +17,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.Transformation
+import android.webkit.WebView
 import android.widget.LinearLayout
+import android.widget.TextView
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -33,15 +36,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activiy_main)
         findViewById(R.id.main_conf_button).setOnClickListener {
-            val tIntent = Intent(application, TimeConfActivity::class.java)
-            tIntent.putExtra("index", ClockList.currentClockIndex)
-            startActivity(tIntent)
+            startActivity(Intent(application, TimeConfActivity::class.java))
         }
         findViewById(R.id.main_list_button).setOnClickListener {
             startActivity(Intent(application, TimeListActivity::class.java))
         }
         mViewPager.adapter = mSectionPagerAdapter
-        mViewPager.setCurrentItem(ClockList.currentClockIndex, false)
         mViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageSelected(position: Int) {
                 ClockList.currentClockIndex = position
@@ -51,6 +51,26 @@ class MainActivity : AppCompatActivity() {
 
             override fun onPageScrollStateChanged(state: Int) {}
         })
+        findViewById(R.id.fab).setOnClickListener {
+            val dialog = Dialog(this)
+            dialog.setCancelable(true)
+            dialog.setTitle("about this app")
+            dialog.setContentView(R.layout.about)
+            val tWebView = dialog.findViewById(R.id.about) as WebView
+            tWebView.loadUrl("file:///android_asset/about.html")
+            dialog.show()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mViewPager.setCurrentItem(ClockList.currentClockIndex, false)
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        mSectionPagerAdapter.notifyDataSetChanged()
+        recreate()
     }
 
     class ClockView(aContext: Context, val mClock: MyClock) : View(aContext) {
@@ -120,10 +140,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    class ClockFragment(val mIndex: Int) : Fragment() {
+    class ClockFragment : Fragment() {
         override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+            val tIndex = arguments.getInt("index")
             val tLayout = inflater!!.inflate(R.layout.fragment_main, container, false) as LinearLayout
-            val tClock = ClockList.get(mIndex)
+            val tClock = ClockList.get(tIndex)
             val tView = ClockView(context, tClock)
             tLayout.addView(tView)
             val tAnimation = ClockAnimation(tView, tClock)
@@ -134,7 +155,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     class SectionPagerAdapter(fm: FragmentManager?) : FragmentPagerAdapter(fm) {
-        override fun getItem(position: Int): Fragment = ClockFragment(position)
+        override fun getItem(position: Int): Fragment {
+            val tFragment = ClockFragment()
+            val tBundle = Bundle()
+            tBundle.putInt("index", position)
+            tFragment.arguments = tBundle
+            return tFragment
+        }
 
         override fun getCount(): Int = ClockList.size
 

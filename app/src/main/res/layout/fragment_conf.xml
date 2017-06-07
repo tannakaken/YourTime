@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/make_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/make_yout_time"
+        android:textAppearance="@android:style/TextAppearance.Material.Title" />
+
+    <EditText
+        android:id="@+id/time_name_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/time_name"
+        android:maxLength="20"
+        android:inputType="textPersonName" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/ampm_text"
+            android:layout_width="195dp"
+            android:layout_height="wrap_content"
+            android:text="@string/ampm"
+            android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
+        <Spinner
+            android:id="@+id/ampm_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:entries="@array/ampm" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/hours_text"
+            android:layout_width="195dp"
+            android:layout_height="wrap_content"
+            android:text="@string/hours"
+            android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
+        <Spinner
+            android:id="@+id/hours_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:entries="@array/range" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/minutes_text"
+            android:layout_width="195dp"
+            android:layout_height="wrap_content"
+            android:text="@string/minutes"
+            android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
+        <Spinner
+            android:id="@+id/minutes_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:entries="@array/range" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/seconds_text"
+            android:layout_width="195dp"
+            android:layout_height="wrap_content"
+            android:text="@string/seconds"
+            android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
+        <Spinner
+            android:id="@+id/seconds_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:entries="@array/range" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/dial_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/dial_is"
+            android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
+        <RadioGroup
+            android:id="@+id/dial_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/dial_from_one_radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/start_from_one" />
+
+            <RadioButton
+                android:id="@+id/dial_from_zero_radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/start_from_zero" />
+        </RadioGroup>
+    </LinearLayout>
+</LinearLayout>
