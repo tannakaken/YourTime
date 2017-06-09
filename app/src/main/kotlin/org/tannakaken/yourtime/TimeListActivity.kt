@@ -10,8 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.content.DialogInterface
 import android.support.v7.app.AlertDialog
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
 import android.widget.Button
 
 
@@ -38,15 +39,15 @@ class TimeListActivity : AppCompatActivity() {
         val callback = object : SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(aRecycleView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?, target: RecyclerView.ViewHolder?): Boolean {
                 if (viewHolder != null && target != null) {
-                    val fromPos = viewHolder.getAdapterPosition();
-                    val toPos = target.getAdapterPosition();
+                    val fromPos = viewHolder.getAdapterPosition()
+                    val toPos = target.getAdapterPosition()
                     ClockList.swap(fromPos, toPos)
                     if (ClockList.currentClockIndex == fromPos) {
                         ClockList.currentClockIndex = toPos
                     } else if (ClockList.currentClockIndex == toPos) {
                         ClockList.currentClockIndex = fromPos
                     }
-                    tRecyclerView.adapter.notifyItemMoved(fromPos, toPos);
+                    tRecyclerView.adapter.notifyItemMoved(fromPos, toPos)
                 }
                 return true
             }
@@ -59,6 +60,7 @@ class TimeListActivity : AppCompatActivity() {
             }
         }
         ItemTouchHelper(callback).attachToRecyclerView(tRecyclerView)
+        tRecyclerView.addItemDecoration(DividerItemDecoration(this, (tRecyclerView.layoutManager as LinearLayoutManager).orientation))
     }
 
     private fun alertDeletion(aRecyclerView : RecyclerView, aPosition : Int) {
@@ -76,8 +78,6 @@ class TimeListActivity : AppCompatActivity() {
                 aRecyclerView.adapter.notifyItemRemoved(aPosition)
                 if (ClockList.currentClockIndex > aPosition) {
                     ClockList.currentClockIndex--
-                    aRecyclerView.adapter.notifyItemChanged(ClockList.currentClockIndex)
-                    aRecyclerView.adapter.notifyItemChanged(ClockList.currentClockIndex + 1)
                 } else if (ClockList.currentClockIndex == aPosition) {
                     ClockList.currentClockIndex = 0
                 }
@@ -87,6 +87,11 @@ class TimeListActivity : AppCompatActivity() {
             })
         }
         alert.show()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        ClockList.save(this)
     }
 
     override fun onRestart() {
@@ -124,6 +129,5 @@ class TimeListActivity : AppCompatActivity() {
             return ClockList.size
         }
     }
-
 
 }

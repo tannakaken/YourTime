@@ -6,10 +6,10 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
 import android.widget.*
 
 class TimeConfActivity : AppCompatActivity() {
@@ -22,19 +22,48 @@ class TimeConfActivity : AppCompatActivity() {
         findViewById(R.id.conf_container) as ViewPager
     }
 
+    private val GESTURE_LISTENER = object : GestureDetector.SimpleOnGestureListener() {
+        private val MIN_DISTANCE = 50
+        private val THRESHOLD_VELOCITY = 200
+        private val MAX_OFF_PATH = 200
+
+        override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
+            val distance_y = e2!!.y - e1!!.y // 上から下
+            val velocity_y = Math.abs(velocityY)
+            if (Math.abs(e1.x - e2.x) < MAX_OFF_PATH && distance_y > MIN_DISTANCE && velocity_y > THRESHOLD_VELOCITY) {
+                startActivity(Intent(application, MainActivity::class.java))
+            }
+            return false
+        }
+
+        override fun onDown(e: MotionEvent?): Boolean {
+            return true
+        }
+    }
+
+    private val GESTURE_DETECTER by lazy {
+        GestureDetector(this, GESTURE_LISTENER)
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        return GESTURE_DETECTER.onTouchEvent(event)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_time_conf)
         mViewPager.adapter = mSectionPagerAdapter
         mViewPager.setCurrentItem(ClockList.currentClockIndex, false)
         mViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageSelected(position: Int) {
-                ClockList.currentClockIndex = position
-            }
+            override fun onPageSelected(position: Int) {}
 
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
-            override fun onPageScrollStateChanged(state: Int) {}
+            override fun onPageScrollStateChanged(state: Int) {
+                if (state == ViewPager.SCROLL_STATE_SETTLING) {
+                    ClockList.currentClockIndex = mViewPager.currentItem
+                }
+            }
         })
         findViewById(R.id.conf_clock_button).setOnClickListener {
             startActivity(Intent(application, MainActivity::class.java))
@@ -44,32 +73,37 @@ class TimeConfActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        mViewPager.setCurrentItem(ClockList.currentClockIndex, false)
+    }
+
     override fun onRestart() {
         super.onRestart()
         mSectionPagerAdapter.notifyDataSetChanged()
-        recreate()
+        finish()
+        startActivity(intent)
     }
 
     class ConfFragment : Fragment() {
 
         var save : () -> Unit = {}
+        var layout: () -> LinearLayout? = { null }
 
         override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
             val tIndex = arguments.getInt("index")
             val tLayout = inflater!!.inflate(R.layout.fragment_conf, container, false) as LinearLayout
+            tLayout.setOnTouchListener { _, event ->
+                activity.onTouchEvent(event)
+            }
+            layout = {tLayout}
             val tTimeNameEditText = tLayout.findViewById(R.id.time_name_edit_text) as EditText
             val tAMPMSpinner = tLayout.findViewById(R.id.ampm_spinner) as Spinner
             val tHoursSpinner : Spinner = tLayout.findViewById(R.id.hours_spinner) as Spinner
             val tMinuteSpinner = tLayout.findViewById(R.id.minutes_spinner) as Spinner
             val tSecondsSpinner = tLayout.findViewById(R.id.seconds_spinner) as Spinner
             val tDialRadioGroup = tLayout.findViewById(R.id.dial_radio_group) as RadioGroup
-            val tClock = ClockList.get(tIndex)
-            tTimeNameEditText.setText(tClock.name)
-            tAMPMSpinner.setSelection(tClock.ampm.rowValue - 1)
-            tHoursSpinner.setSelection(tClock.hours - 1)
-            tMinuteSpinner.setSelection(tClock.minutes - 1)
-            tSecondsSpinner.setSelection(tClock.seconds - 1)
-            if (tClock.dialFromOne) tDialRadioGroup.check(R.id.dial_from_one_radio) else tDialRadioGroup.check(R.id.dial_from_zero_radio)
+            val tClock = ClockList[tIndex]
             save = {
                 ClockList.set(tIndex, MyClock(
                         tTimeNameEditText.text.toString(),
@@ -84,11 +118,33 @@ class TimeConfActivity : AppCompatActivity() {
             return tLayout
         }
 
+        override fun onResume() {
+            super.onResume()
+            val tIndex = arguments.getInt("index")
+            val tLayout = layout()
+            if (tLayout == null) {
+                return
+            }
+            val tTimeNameEditText = tLayout.findViewById(R.id.time_name_edit_text) as EditText
+            val tAMPMSpinner = tLayout.findViewById(R.id.ampm_spinner) as Spinner
+            val tHoursSpinner : Spinner = tLayout.findViewById(R.id.hours_spinner) as Spinner
+            val tMinuteSpinner = tLayout.findViewById(R.id.minutes_spinner) as Spinner
+            val tSecondsSpinner = tLayout.findViewById(R.id.seconds_spinner) as Spinner
+            val tDialRadioGroup = tLayout.findViewById(R.id.dial_radio_group) as RadioGroup
+            val tClock = ClockList[tIndex]
+            tTimeNameEditText.setText(tClock.name)
+            tAMPMSpinner.setSelection(tClock.ampm.rowValue - 1)
+            tHoursSpinner.setSelection(tClock.hours - 1)
+            tMinuteSpinner.setSelection(tClock.minutes - 1)
+            tSecondsSpinner.setSelection(tClock.seconds - 1)
+            if (tClock.dialFromOne) tDialRadioGroup.check(R.id.dial_from_one_radio) else tDialRadioGroup.check(R.id.dial_from_zero_radio)
+        }
+
         override fun onPause() {
             super.onPause()
             save()
+            ClockList.save(this.context)
         }
-
     }
 
     class SectionPagerAdapter(fm: FragmentManager?) : FragmentPagerAdapter(fm) {
@@ -99,6 +155,11 @@ class TimeConfActivity : AppCompatActivity() {
             tFragment.arguments = tBundle
             return tFragment
         }
+
+        override fun getItemPosition(`object`: Any?): Int {
+            return PagerAdapter.POSITION_NONE
+        }
+
         override fun getCount(): Int = ClockList.size
 
         override fun getPageTitle(position: Int): CharSequence = ClockList.get(position).name

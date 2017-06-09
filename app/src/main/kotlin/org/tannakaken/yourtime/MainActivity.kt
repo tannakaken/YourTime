@@ -11,15 +11,15 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
 import android.view.animation.Animation
 import android.view.animation.Transformation
 import android.webkit.WebView
 import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.Toast
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -32,25 +32,59 @@ class MainActivity : AppCompatActivity() {
         findViewById(R.id.container) as ViewPager
     }
 
+    private val GESTURE_LISTENER = object : GestureDetector.SimpleOnGestureListener() {
+        private val MIN_DISTANCE = 50
+        private val THRESHOLD_VELOCITY = 200
+        private val MAX_OFF_PATH = 200
+
+        override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
+            val distance_y = e1!!.y - e2!!.y // 下から上
+            val velocity_y = Math.abs(velocityY)
+            if (Math.abs(e1.x - e2.x) < MAX_OFF_PATH && distance_y > MIN_DISTANCE && velocity_y > THRESHOLD_VELOCITY) {
+                startActivity(Intent(application, TimeConfActivity::class.java))
+            }
+            return false
+        }
+
+        override fun onDown(e: MotionEvent?): Boolean {
+            return true
+        }
+    }
+
+    private val GESTURE_DETECTER by lazy {
+        GestureDetector(this, GESTURE_LISTENER)
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        return GESTURE_DETECTER.onTouchEvent(event)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activiy_main)
         findViewById(R.id.main_conf_button).setOnClickListener {
             startActivity(Intent(application, TimeConfActivity::class.java))
         }
+        val maxim = listOf("時は金なり", "光陰矢の如し","歳歳年年人同じからず","少年老い易く学成り難し")
+        findViewById(R.id.main_title).setOnClickListener {
+            Toast.makeText(this, maxim[(Math.random() * maxim.size).toInt()], Toast.LENGTH_SHORT).show()
+        }
         findViewById(R.id.main_list_button).setOnClickListener {
             startActivity(Intent(application, TimeListActivity::class.java))
         }
         mViewPager.adapter = mSectionPagerAdapter
         mViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageSelected(position: Int) {
-                ClockList.currentClockIndex = position
-            }
+            override fun onPageSelected(position: Int) {}
 
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
-            override fun onPageScrollStateChanged(state: Int) {}
+            override fun onPageScrollStateChanged(state: Int) {
+                if (state == ViewPager.SCROLL_STATE_SETTLING) {
+                    ClockList.currentClockIndex = mViewPager.currentItem
+                }
+            }
         })
+
         findViewById(R.id.fab).setOnClickListener {
             val dialog = Dialog(this)
             dialog.setCancelable(true)
@@ -70,14 +104,19 @@ class MainActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
         mSectionPagerAdapter.notifyDataSetChanged()
-        recreate()
+        finish()
+        startActivity(intent)
     }
 
-    class ClockView(aContext: Context, val mClock: MyClock) : View(aContext) {
+    class ClockView(val mContext: Context, val mClock: MyClock) : View(mContext) {
         private val mPaint = Paint()
         var mSecond: Int = 0
         var mMinute: Int = 0
         var mHour: Float = 0F
+
+        override fun onTouchEvent(event: MotionEvent?): Boolean {
+            return (mContext as MainActivity).onTouchEvent(event)
+        }
 
         override fun onDraw(aCanvas: Canvas?) {
             if (aCanvas == null) {
@@ -101,9 +140,7 @@ class MainActivity : AppCompatActivity() {
 
         private fun min2Rad(aMinute : Int) : Double = ((aMinute * 2.0) / mClock.minutes - 0.5) * Math.PI
 
-
         private fun hour2Rad(aHour: Float) : Double = ((aHour * 2.0) / mClock.hours - 0.5) * Math.PI
-
 
         private fun drawName(aCanvas: Canvas) {
             val tMetrix = mPaint.fontMetrics
@@ -141,10 +178,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     class ClockFragment : Fragment() {
+
         override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
             val tIndex = arguments.getInt("index")
             val tLayout = inflater!!.inflate(R.layout.fragment_main, container, false) as LinearLayout
-            val tClock = ClockList.get(tIndex)
+            val tClock = ClockList[tIndex]
             val tView = ClockView(context, tClock)
             tLayout.addView(tView)
             val tAnimation = ClockAnimation(tView, tClock)
@@ -163,8 +201,13 @@ class MainActivity : AppCompatActivity() {
             return tFragment
         }
 
+        override fun getItemPosition(`object`: Any?): Int {
+            return PagerAdapter.POSITION_NONE
+        }
+
         override fun getCount(): Int = ClockList.size
 
         override fun getPageTitle(position: Int): CharSequence = ClockList.get(position).name
     }
 }
+
