@@ -32,7 +32,8 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:gravity="left"
-                android:text="@string/list_text" />
+                android:text="@string/list_text"
+                android:textSize="15sp"/>
 
             <TextView
                 android:id="@+id/main_title"
@@ -51,7 +52,8 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:gravity="right"
-                android:text="@string/conf_text" />
+                android:text="@string/conf_text"
+                android:textSize="15sp"/>
         </LinearLayout>
 
     </android.support.v7.widget.Toolbar>

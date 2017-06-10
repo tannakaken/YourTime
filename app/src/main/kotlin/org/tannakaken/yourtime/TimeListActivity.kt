@@ -29,12 +29,14 @@ class TimeListActivity : AppCompatActivity() {
             aView : View ->
             ClockList.currentClockIndex = tRecyclerView.getChildAdapterPosition(aView)
             startActivity(Intent(application, TimeConfActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_down)
         }
 
         findViewById(R.id.list_add_button).setOnClickListener {
             ClockList.add(MyClock("新しい時間", MyClock.Ampm.AMPM, 12, 60, 60, true))
             ClockList.currentClockIndex = ClockList.size - 1
             startActivity(Intent(application, TimeConfActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_down)
         }
         val callback = object : SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(aRecycleView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?, target: RecyclerView.ViewHolder?): Boolean {
@@ -121,6 +123,7 @@ class TimeListActivity : AppCompatActivity() {
                 holder.mSelectCurrentTimeButton.setOnClickListener {
                     ClockList.currentClockIndex = mRecyclerVIew.getChildAdapterPosition(holder.mItemView)
                     startActivity(Intent(application, MainActivity::class.java))
+                    overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_up)
                 }
             }
         }

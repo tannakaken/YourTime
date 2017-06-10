@@ -13,7 +13,6 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
-import android.util.Log
 import android.view.*
 import android.view.animation.Animation
 import android.view.animation.Transformation
@@ -22,26 +21,49 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import java.util.*
 
+/**
+ * 主画面。
+ * １２時間制以外の時間制でアナログ時計を表示する。左上に時間制に付けた名前が表示される。
+ * 左右のスワイプで他の時間制に移動する。
+ * 下から上のスワイプで時間制設定画面{@link TimeConfActivity}に移動する。
+ * ツールバーの右側の文字列からも時間制設定画面に移動。
+ * ツールバーの左側の文字列からは時間制一覧画面{@link TimeListActivity}に移動する。
+ * ツールバーの中央の文字列はイースターエッグで時間に関することわざをトーストする。
+ */
 class MainActivity : AppCompatActivity() {
 
+    /**
+     * 左右のスワイプによるページ移動を司るオブジェクト。
+     */
     private val mSectionPagerAdapter : SectionPagerAdapter by lazy {
         SectionPagerAdapter(supportFragmentManager)
     }
 
+    /**
+     * 複数のページを持ちスワイプで移動できるView
+     */
     private val mViewPager : ViewPager by lazy {
         findViewById(R.id.container) as ViewPager
     }
 
+    /**
+     * 上下スワイプによるページ移動を司るオブジェクト。
+     */
     private val GESTURE_LISTENER = object : GestureDetector.SimpleOnGestureListener() {
+        // スワイプを検知するかどうかの閾値
         private val MIN_DISTANCE = 50
         private val THRESHOLD_VELOCITY = 200
         private val MAX_OFF_PATH = 200
 
+        /**
+         *
+         */
         override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
             val distance_y = e1!!.y - e2!!.y // 下から上
             val velocity_y = Math.abs(velocityY)
             if (Math.abs(e1.x - e2.x) < MAX_OFF_PATH && distance_y > MIN_DISTANCE && velocity_y > THRESHOLD_VELOCITY) {
                 startActivity(Intent(application, TimeConfActivity::class.java))
+                overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_down)
             }
             return false
         }
@@ -59,18 +81,25 @@ class MainActivity : AppCompatActivity() {
         return GESTURE_DETECTER.onTouchEvent(event)
     }
 
+    private fun easterEgg() {
+        val maxim = listOf("時は金なり", "光陰矢の如し","歳歳年年人同じからず","少年老い易く学成り難し","明日は明日の風が吹く","今日の後に今日なし")
+        Toast.makeText(this, maxim[(Math.random() * maxim.size).toInt()], Toast.LENGTH_SHORT).show()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activiy_main)
         findViewById(R.id.main_conf_button).setOnClickListener {
             startActivity(Intent(application, TimeConfActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_down)
         }
-        val maxim = listOf("時は金なり", "光陰矢の如し","歳歳年年人同じからず","少年老い易く学成り難し")
+        // イースターエッグ
         findViewById(R.id.main_title).setOnClickListener {
-            Toast.makeText(this, maxim[(Math.random() * maxim.size).toInt()], Toast.LENGTH_SHORT).show()
+            easterEgg()
         }
         findViewById(R.id.main_list_button).setOnClickListener {
             startActivity(Intent(application, TimeListActivity::class.java))
+            overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out)
         }
         mViewPager.adapter = mSectionPagerAdapter
         mViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {

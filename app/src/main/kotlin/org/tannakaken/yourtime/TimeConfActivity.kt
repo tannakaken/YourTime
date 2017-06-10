@@ -32,6 +32,7 @@ class TimeConfActivity : AppCompatActivity() {
             val velocity_y = Math.abs(velocityY)
             if (Math.abs(e1.x - e2.x) < MAX_OFF_PATH && distance_y > MIN_DISTANCE && velocity_y > THRESHOLD_VELOCITY) {
                 startActivity(Intent(application, MainActivity::class.java))
+                overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_up)
             }
             return false
         }
@@ -67,9 +68,11 @@ class TimeConfActivity : AppCompatActivity() {
         })
         findViewById(R.id.conf_clock_button).setOnClickListener {
             startActivity(Intent(application, MainActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_up)
         }
         findViewById(R.id.conf_list_button).setOnClickListener {
             startActivity(Intent(application, TimeListActivity::class.java))
+            overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out)
         }
     }
 

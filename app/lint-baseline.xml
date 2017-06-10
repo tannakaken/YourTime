@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="4" by="lint 2.3.3">
+
+    <issue
+        id="OldTargetApi"
+        message="Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the android.os.Build.VERSION_CODES javadoc for details.">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="AllowBackup"
+        message="On SDK version 23 and up, your app data will be automatically backed up and restored on app install. Consider adding the attribute `android:fullBackupContent` to specify an `@xml` resource which configures which files to backup. More info: https://developer.android.com/training/backup/autosyncapi.html">
+        <location
+            file="src\main\AndroidManifest.xml"
+            line="5"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.layout.about` appears to be unused">
+        <location
+            file="src\main\res\layout\about.xml"
+            line="2"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.layout.activity_time_conf` appears to be unused">
+        <location
+            file="src\main\res\layout\activity_time_conf.xml"
+            line="2"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.layout.activity_time_list` appears to be unused">
+        <location
+            file="src\main\res\layout\activity_time_list.xml"
+            line="2"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.layout.activiy_main` appears to be unused">
+        <location
+            file="src\main\res\layout\activiy_main.xml"
+            line="2"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.activity_horizontal_margin` appears to be unused">
+        <location
+            file="src\main\res\values\dimens.xml"
+            line="3"/>
+        <location
+            file="src\main\res\values-w820dp\dimens.xml"
+            line="5"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.activity_vertical_margin` appears to be unused">
+        <location
+            file="src\main\res\values\dimens.xml"
+            line="4"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.fab_margin` appears to be unused">
+        <location
+            file="src\main\res\values\dimens.xml"
+            line="5"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.appbar_padding_top` appears to be unused">
+        <location
+            file="src\main\res\values\dimens.xml"
+            line="6"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.layout.fragment_conf` appears to be unused">
+        <location
+            file="src\main\res\layout\fragment_conf.xml"
+            line="2"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.layout.fragment_main` appears to be unused">
+        <location
+            file="src\main\res\layout\fragment_main.xml"
+            line="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.anim.slide_in_down` appears to be unused">
+        <location
+            file="src\main\res\anim\slide_in_down.xml"
+            line="2"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.anim.slide_in_up` appears to be unused">
+        <location
+            file="src\main\res\anim\slide_in_up.xml"
+            line="2"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.anim.slide_out_down` appears to be unused">
+        <location
+            file="src\main\res\anim\slide_out_down.xml"
+            line="2"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.anim.slide_out_up` appears to be unused">
+        <location
+            file="src\main\res\anim\slide_out_up.xml"
+            line="2"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.make_yout_time` appears to be unused">
+        <location
+            file="src\main\res\values\strings.xml"
+            line="3"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.time_name` appears to be unused">
+        <location
+            file="src\main\res\values\strings.xml"
+            line="4"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.ampm` appears to be unused">
+        <location
+            file="src\main\res\values\strings.xml"
+            line="5"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.hours` appears to be unused">
+        <location
+            file="src\main\res\values\strings.xml"
+            line="6"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.minutes` appears to be unused">
+        <location
+            file="src\main\res\values\strings.xml"
+            line="7"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.seconds` appears to be unused">
+        <location
+            file="src\main\res\values\strings.xml"
+            line="8"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.dial_is` appears to be unused">
+        <location
+            file="src\main\res\values\strings.xml"
+            line="9"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.start_from_one` appears to be unused">
+        <location
+            file="src\main\res\values\strings.xml"
+            line="10"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.start_from_zero` appears to be unused">
+        <location
+            file="src\main\res\values\strings.xml"
+            line="11"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.cancel` appears to be unused">
+        <location
+            file="src\main\res\values\strings.xml"
+            line="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.delete_text` appears to be unused">
+        <location
+            file="src\main\res\values\strings.xml"
+            line="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.add` appears to be unused">
+        <location
+            file="src\main\res\values\strings.xml"
+            line="14"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.conf_text` appears to be unused">
+        <location
+            file="src\main\res\values\strings.xml"
+            line="15"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.list_text` appears to be unused">
+        <location
+            file="src\main\res\values\strings.xml"
+            line="16"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.clock_text` appears to be unused">
+        <location
+            file="src\main\res\values\strings.xml"
+            line="17"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.array.ampm` appears to be unused">
+        <location
+            file="src\main\res\values\strings.xml"
+            line="18"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.array.range` appears to be unused">
+        <location
+            file="src\main\res\values\strings.xml"
+            line="23"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.title_activity_main2` appears to be unused">
+        <location
+            file="src\main\res\values\strings.xml"
+            line="125"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.action_settings` appears to be unused">
+        <location
+            file="src\main\res\values\strings.xml"
+            line="126"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.section_format` appears to be unused">
+        <location
+            file="src\main\res\values\strings.xml"
+            line="127"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.layout.time_row` appears to be unused">
+        <location
+            file="src\main\res\layout\time_row.xml"
+            line="2"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="[I18N] Hardcoded string &quot;‘I‘ð&quot;, should use `@string` resource">
+        <location
+            file="src\main\res\layout\time_row.xml"
+            line="19"/>
+    </issue>
+
+    <issue
+        id="RtlSymmetry"
+        message="When you define `paddingLeft` you should probably also define `paddingRight` for right-to-left symmetry">
+        <location
+            file="src\main\res\layout\activity_time_conf.xml"
+            line="19"/>
+    </issue>
+
+    <issue
+        id="RtlSymmetry"
+        message="When you define `paddingLeft` you should probably also define `paddingRight` for right-to-left symmetry">
+        <location
+            file="src\main\res\layout\activity_time_list.xml"
+            line="19"/>
+    </issue>
+
+    <issue
+        id="RtlSymmetry"
+        message="When you define `paddingLeft` you should probably also define `paddingRight` for right-to-left symmetry">
+        <location
+            file="src\main\res\layout\activiy_main.xml"
+            line="21"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider replacing `android:paddingLeft` with `android:paddingStart=&quot;10dp&quot;` to better support right-to-left layouts">
+        <location
+            file="src\main\res\layout\activity_time_conf.xml"
+            line="19"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Use &quot;`start`&quot; instead of &quot;`left`&quot; to ensure correct behavior in right-to-left locales">
+        <location
+            file="src\main\res\layout\activity_time_conf.xml"
+            line="32"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Use &quot;`end`&quot; instead of &quot;`right`&quot; to ensure correct behavior in right-to-left locales">
+        <location
+            file="src\main\res\layout\activity_time_conf.xml"
+            line="51"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider replacing `android:paddingLeft` with `android:paddingStart=&quot;10dp&quot;` to better support right-to-left layouts">
+        <location
+            file="src\main\res\layout\activity_time_list.xml"
+            line="19"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Use &quot;`start`&quot; instead of &quot;`left`&quot; to ensure correct behavior in right-to-left locales">
+        <location
+            file="src\main\res\layout\activity_time_list.xml"
+            line="30"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Use &quot;`end`&quot; instead of &quot;`right`&quot; to ensure correct behavior in right-to-left locales">
+        <location
+            file="src\main\res\layout\activity_time_list.xml"
+            line="47"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider replacing `android:paddingLeft` with `android:paddingStart=&quot;10dp&quot;` to better support right-to-left layouts">
+        <location
+            file="src\main\res\layout\activiy_main.xml"
+            line="21"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Use &quot;`start`&quot; instead of &quot;`left`&quot; to ensure correct behavior in right-to-left locales">
+        <location
+            file="src\main\res\layout\activiy_main.xml"
+            line="34"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Use &quot;`end`&quot; instead of &quot;`right`&quot; to ensure correct behavior in right-to-left locales">
+        <location
+            file="src\main\res\layout\activiy_main.xml"
+            line="54"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginRight` with `android:layout_marginEnd=&quot;16dp&quot;` to better support right-to-left layouts">
+        <location
+            file="src\main\res\layout\activiy_main.xml"
+            line="74"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider replacing `android:layout_alignParentRight` with `android:layout_alignParentEnd=&quot;true&quot;` to better support right-to-left layouts">
+        <location
+            file="src\main\res\layout\activiy_main.xml"
+            line="75"/>
+    </issue>
+
+</issues>
