@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">YourTime</string>
+    <string name="app_name">あなたの時間</string>
     <string name="make_yout_time">あなただけの時間を作ろう</string>
     <string name="time_name">時間の名前</string>
     <string name="ampm">一日何区切り</string>
