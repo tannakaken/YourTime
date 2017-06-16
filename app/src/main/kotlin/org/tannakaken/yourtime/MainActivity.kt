@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun easterEgg() {
-        val maxim = listOf("時は金なり", "光陰矢の如し","歳歳年年人同じからず","少年老い易く学成り難し","明日は明日の風が吹く","今日の後に今日なし")
+        val maxim = listOf("時は金なり", "光陰矢の如し","歳歳年年人同じからず","少年老い易く学成り難し","明日は明日の風が吹く","今日の後に今日なし","思い立ったが吉日")
         Toast.makeText(this, maxim[(Math.random() * maxim.size).toInt()], Toast.LENGTH_SHORT).show()
     }
 
@@ -142,6 +142,8 @@ class MainActivity : AppCompatActivity() {
         var mSecond: Int = 0
         var mMinute: Int = 0
         var mHour: Float = 0F
+
+        constructor(mContext: Context) : this(mContext, ClockList[0])
 
         override fun onTouchEvent(event: MotionEvent?): Boolean {
             return (mContext as MainActivity).onTouchEvent(event)
@@ -236,7 +238,7 @@ class MainActivity : AppCompatActivity() {
 
         override fun getCount(): Int = ClockList.size
 
-        override fun getPageTitle(position: Int): CharSequence = ClockList.get(position).name
+        override fun getPageTitle(position: Int): CharSequence = ClockList[position].name
     }
 }
 

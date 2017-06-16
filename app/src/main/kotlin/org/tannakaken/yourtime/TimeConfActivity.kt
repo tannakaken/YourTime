@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
-import android.util.Log
 import android.view.*
 import android.widget.*
 
@@ -50,6 +49,14 @@ class TimeConfActivity : AppCompatActivity() {
         return GESTURE_DETECTER.onTouchEvent(event)
     }
 
+    private fun easterEgg() {
+        val maxim = listOf(
+                "我々の常識は速度は相対的だと教えているが、相対性理論によると実は光速度は不変だ。すると逆に我々が絶対的だと考えている「同時」という概念が見方で変わる相対的なものであることが分かる。",
+                "マグタガートは「過去・現在・未来」で表される時間と「より前・より後」で表される時間は矛盾すると考え、時間は存在しないと論証しようとした。彼はそれにより永遠なる物の存在を示そうとした。"
+        )
+        Toast.makeText(this, maxim[(Math.random() * maxim.size).toInt()], Toast.LENGTH_LONG).show()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_time_conf)
@@ -69,6 +76,9 @@ class TimeConfActivity : AppCompatActivity() {
         findViewById(R.id.conf_clock_button).setOnClickListener {
             startActivity(Intent(application, MainActivity::class.java))
             overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_up)
+        }
+        findViewById(R.id.main_title).setOnClickListener {
+            easterEgg()
         }
         findViewById(R.id.conf_list_button).setOnClickListener {
             startActivity(Intent(application, TimeListActivity::class.java))
@@ -106,7 +116,6 @@ class TimeConfActivity : AppCompatActivity() {
             val tMinuteSpinner = tLayout.findViewById(R.id.minutes_spinner) as Spinner
             val tSecondsSpinner = tLayout.findViewById(R.id.seconds_spinner) as Spinner
             val tDialRadioGroup = tLayout.findViewById(R.id.dial_radio_group) as RadioGroup
-            val tClock = ClockList[tIndex]
             save = {
                 ClockList.set(tIndex, MyClock(
                         tTimeNameEditText.text.toString(),
