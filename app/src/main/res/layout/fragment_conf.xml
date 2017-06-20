@@ -131,4 +131,38 @@
                 android:text="@string/start_from_zero" />
         </RadioGroup>
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/wise_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/wise_is"
+            android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
+        <RadioGroup
+            android:id="@+id/wise_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/clockwise_radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/clockwise" />
+
+            <RadioButton
+                android:id="@+id/counterclockwise_radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/counterclockwise" />
+        </RadioGroup>
+    </LinearLayout>
 </LinearLayout>

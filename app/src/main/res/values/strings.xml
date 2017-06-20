@@ -9,6 +9,9 @@
     <string name="dial_is">文字盤は</string>
     <string name="start_from_one">1から</string>
     <string name="start_from_zero">0から</string>
+    <string name="wise_is">回転方向は</string>
+    <string name="clockwise">右回り</string>
+    <string name="counterclockwise">左回り</string>
     <string name="cancel">キャンセル</string>
     <string name="delete_text">削除</string>
     <string name="add">+</string>
