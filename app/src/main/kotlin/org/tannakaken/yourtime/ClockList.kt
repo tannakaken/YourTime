@@ -18,6 +18,7 @@ object ClockList : MutableList<MyClock> by ArrayList<MyClock>()  {
      * @param aContext
      */
     fun init(aContext: Context) {
+        clear()
         if (dataExists(aContext)) {
             load(aContext)
         } else {

@@ -20,15 +20,15 @@ data class MyClock(val name: String, val ampm: Ampm, val hours: Int, val minutes
     /**
      * 我々の一秒が通常の時計システムで何秒か
      */
-    private val mySecond = (ONEDAY / (seconds * minutes * hours * ampm.division)).toInt()
+    private val MY_SECOND = (ONEDAY / (seconds * minutes * hours * ampm.division)).toInt()
     /**
      * 我々の一分が通常の時計システムで何秒か
      */
-    private val myMinute = mySecond * seconds
+    private val MY_MINUTE = MY_SECOND * seconds
     /**
      * 我々の一時間が通常の時計システムで何秒か
      */
-    private val myHour = myMinute * minutes
+    private val MY_HOUR = MY_MINUTE * minutes
 
     /**
      * 時計回りすなわち右回りなら角度はプラス。反時計回りすなわち左回りなら角度はマイナス
@@ -38,16 +38,16 @@ data class MyClock(val name: String, val ampm: Ampm, val hours: Int, val minutes
 
     /**
      * @param aMillisecond 一日の中の現在の時刻をミリセカンドで表した数
-     * @return この時計システムでの現在の秒・分・時刻
+     * @return この時計システムでの現在の秒・分・時刻を表す[Now]
      */
     fun calcNow(aMillisecond: Long): Now {
 
-        val hour = (aMillisecond / myHour % myHour).toInt()
-        val restOfHour = (aMillisecond % myHour).toInt()
-        val minute = restOfHour / myMinute
-        val restOfMinute = restOfHour % myMinute
-        val second = restOfMinute / mySecond
-        return Now(hour, minute, second)
+        val tHour = (aMillisecond / MY_HOUR % hours).toInt()
+        val tRestOfHour = (aMillisecond % MY_HOUR).toInt()
+        val tMinute = tRestOfHour / MY_MINUTE
+        val tRestOfMinute = tRestOfHour % MY_MINUTE
+        val tSecond = tRestOfMinute / MY_SECOND
+        return Now(tHour, tMinute, tSecond)
     }
 
     /**
