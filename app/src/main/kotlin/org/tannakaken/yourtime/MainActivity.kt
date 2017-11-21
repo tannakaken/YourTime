@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
@@ -18,8 +19,12 @@ import android.view.animation.Animation
 import android.view.animation.Transformation
 import android.webkit.WebView
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
 import java.util.*
+import com.google.android.gms.ads.MobileAds
 
 /**
  * 主画面。
@@ -43,7 +48,7 @@ class MainActivity : AppCompatActivity() {
      * 複数のページを持ちスワイプで移動できるView
      */
     private val mViewPager : ViewPager by lazy {
-        findViewById(R.id.container) as ViewPager
+        findViewById<ViewPager>(R.id.container)
     }
 
     /**
@@ -101,9 +106,10 @@ class MainActivity : AppCompatActivity() {
      * イースターエッグ。時間に関することわざ
      */
     private fun easterEgg() {
-        val maxim = listOf("時は金なり", "光陰矢の如し","歳歳年年人同じからず","少年老い易く学成り難し","明日は明日の風が吹く","今日の後に今日なし","思い立ったが吉日")
+        val maxim = listOf("時は金なり", "光陰矢の如し","歳歳年年人同じからず","少年老い易く学成り難し","一寸の光陰軽んずべからず","明日は明日の風が吹く","今日の後に今日なし","思い立ったが吉日")
         Toast.makeText(this, maxim[(Math.random() * maxim.size).toInt()], Toast.LENGTH_SHORT).show()
     }
+
     /**
      * @param aSavedInstanceState [AppCompatActivity]が再表示されたときに、以前の状態を復元するための情報
      */
@@ -111,16 +117,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(aSavedInstanceState)
         setContentView(R.layout.activiy_main)
         // 右上にある文字列で時計システムの設定画面にうつる
-        findViewById(R.id.main_conf_button).setOnClickListener {
+        findViewById<TextView>(R.id.main_conf_button).setOnClickListener {
             startActivity(Intent(application, TimeConfActivity::class.java))
             overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_down)
         }
         // イースターエッグ
-        findViewById(R.id.main_title).setOnClickListener {
+        findViewById<TextView>(R.id.main_title).setOnClickListener {
             easterEgg()
         }
         // 左上にある文字列で時計システムの一覧画面にうつる
-        findViewById(R.id.main_list_button).setOnClickListener {
+        findViewById<TextView>(R.id.main_list_button).setOnClickListener {
             startActivity(Intent(application, TimeListActivity::class.java))
             overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out)
         }
@@ -139,15 +145,20 @@ class MainActivity : AppCompatActivity() {
         })
 
         // 右下のフローティングアクションボタンで、アプリの詳細情報（作者、Webページ、連絡先、等）を表示
-        findViewById(R.id.fab).setOnClickListener {
+        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
             val dialog = Dialog(this)
             dialog.setCancelable(true)
             dialog.setTitle("about this app")
             dialog.setContentView(R.layout.about)
-            val tWebView = dialog.findViewById(R.id.about) as WebView
+            val tWebView = dialog.findViewById<WebView>(R.id.about)
             tWebView.loadUrl("file:///android_asset/about.html")
             dialog.show()
         }
+        // 広告
+        MobileAds.initialize(this, "ca-app-pub-2965415045499808~6221345615")
+        val tAdView = findViewById<AdView>(R.id.adView)
+        val tAdRequest = AdRequest.Builder().build()
+        tAdView.loadAd(tAdRequest)
     }
 
     /**
@@ -272,7 +283,7 @@ class MainActivity : AppCompatActivity() {
         override fun applyTransformation(interpolatedTime: Float, t: Transformation?) {
             val tCal = Calendar.getInstance(TimeZone.getDefault())
             tCal.timeInMillis = System.currentTimeMillis()
-            val millisecond = ((tCal.get(Calendar.HOUR) * 60 + tCal.get(Calendar.MINUTE)) * 60 + tCal.get(Calendar.SECOND)) * 1000L + tCal.get(Calendar.MILLISECOND)
+            val millisecond = (((tCal.get(Calendar.AM_PM) * 12 + tCal.get(Calendar.HOUR)) * 60 + tCal.get(Calendar.MINUTE)) * 60 + tCal.get(Calendar.SECOND)) * 1000L + tCal.get(Calendar.MILLISECOND)
             val tNow = mClock.calcNow(millisecond)
             mView.mSecond = tNow.second
             mView.mMinute = tNow.minute
@@ -286,6 +297,7 @@ class MainActivity : AppCompatActivity() {
      * ページの内容を構成するフラグメント。フラグメントは必ずargumentで値の受け渡しをすること。でないと再構成した時にクラッシュする。
      */
     class ClockFragment : Fragment() {
+
         /**
          *
          * @param inflater レイアウトを取得するためのオブジェクト
@@ -301,10 +313,13 @@ class MainActivity : AppCompatActivity() {
             tLayout.addView(tView)
             val tAnimation = ClockAnimation(tView, tClock)
             tAnimation.repeatCount = -1
-            tView.startAnimation(tAnimation)
+            if (!BuildConfig.DEBUG) {
+                tView.startAnimation(tAnimation)
+            }
             return tLayout
         }
     }
+
     /**
      * ページをコントロールする。
      * @param fm フラグメントを管理するオブジェクト
